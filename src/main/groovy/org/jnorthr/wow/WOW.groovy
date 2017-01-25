@@ -158,9 +158,10 @@ public class WOW
     */
     def setup(String name)
     {
+// need more work here to clean up and allow Saver module to provide guidance    
         //def ch = new Chooser();
         def ch = new Saver();
-        if (ch.result)
+        if (ch.chosen)
         {
             ch.say "the full name of the selected output path is "+ch.getName();    
         	ch.say "path="+ch.getPath()+"\nartifact name="+ch.getArtifact();    
