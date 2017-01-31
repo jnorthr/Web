@@ -4,22 +4,27 @@ package org.jnorthr.wow;
 * see: http://code.google.com/p/spock/wiki/SpockBasics
 * A spock test wrapper around the base class
 */
-//import CacheEntry;
-//import groovy.transform.Canonical
-//import groovy.transform.ToString
 import java.util.logging.Logger;
 import spock.lang.*
 import javax.swing.JFileChooser;
 
+//import CacheEntry;
+//import groovy.transform.Canonical
+//import groovy.transform.ToString
 
 class ChooserTestSpec extends Specification 
 {
   // fields
   //static Logger log = Logger.getLogger(CacheManagerTestSpock.class.getName());
-
+  Chooser ch;
+  
   // fixture methods
   // Note: The setupSpec() and cleanupSpec() methods may not reference instance fields.
-  def setup() {}          // run before every feature method
+  def setup() 
+  {
+      ch = new Chooser();  
+  } // run before every feature method
+  
   def cleanup() {}        // run after every feature method
   def setupSpec() {}     // run before the first feature method
   def cleanupSpec() {}   // run after the last feature method}
@@ -43,11 +48,7 @@ Whereas the first and last phases are optional, the stimulus and response phases
 
 */
   // First Test
-  def "Setup JFileChooser to save a file"() {
-    given:
-    	// [] is Groovy literal for List and is infered
-        def ch = new Chooser();
- 
+  def "Setup JFileChooser to save a file"() {  
     when:
 		ch.setOpenOrSave(false);
  
@@ -58,14 +59,10 @@ Whereas the first and last phases are optional, the stimulus and response phases
     	ch.openOrSave == false
     	ch.mode == JFileChooser.FILES_AND_DIRECTORIES;
     	ch.fc.getFileSelectionMode()==ch.mode
-  }
+  } // end of spec
 
   // 2nd Test
   def "Set JFileChooser initial folder to known value"() {
-    given:
-    	// [] is Groovy literal for List and is infered
-        def ch = new Chooser();
- 
     when:
 		ch.setPath("/Fred");
  
@@ -76,14 +73,10 @@ Whereas the first and last phases are optional, the stimulus and response phases
     	def e = thrown(RuntimeException)
 		e.cause == null
     	ch.fc.getCurrentDirectory()!="/Fred";
-  }
+  } // end of spec
 
   // 3rd Test
   def "Ask JFileChooser to allow both files and folder selection by user"() {
-    given:
-    	// [] is Groovy literal for List and is infered
-        def ch = new Chooser();
- 
     when:
 		ch.selectBoth();
  
@@ -94,23 +87,5 @@ Whereas the first and last phases are optional, the stimulus and response phases
     	ch.fileSelect == true;
     	ch.pathSelect == true;
 
-  }
-
-  // 4th Test
-  def "Ask user to choose a file"() {
-    given:
-    	// [] is Groovy literal for List and is infered
-        def ch = new Chooser();
- 
-    when:
-		def tf = ch.getChoice();
- 
-    then:
-    	// Asserts are implicit and not need to be stated.
-    	tf == true;
-    	ch.result==JFileChooser.APPROVE_OPTION;
-  }
-  
-  // helper methods
-} 
-
+  } // end of spec
+}  // end of class
