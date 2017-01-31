@@ -7,7 +7,7 @@ package org.jnorthr.wow;
 import java.util.logging.Logger;
 import spock.lang.*
 import javax.swing.JFileChooser;
-
+import spock.lang.Shared
 //import CacheEntry;
 //import groovy.transform.Canonical
 //import groovy.transform.ToString
@@ -16,13 +16,14 @@ class ChooserTestSpec extends Specification
 {
   // fields
   //static Logger log = Logger.getLogger(CacheManagerTestSpock.class.getName());
+  @Shared
   Chooser ch;
   
   // fixture methods
   // Note: The setupSpec() and cleanupSpec() methods may not reference instance fields.
   def setup() 
   {
-      Chooser ch = new Chooser();  
+      ch = new Chooser();  
   } // run before every feature method
   
   def cleanup() {}        // run after every feature method
