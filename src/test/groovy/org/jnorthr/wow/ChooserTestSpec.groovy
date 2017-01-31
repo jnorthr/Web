@@ -16,8 +16,8 @@ class ChooserTestSpec extends Specification
 {
   // fields
   //static Logger log = Logger.getLogger(CacheManagerTestSpock.class.getName());
-  @Shared
-  Chooser ch;
+  //@Shared
+  //Chooser ch;
   
   // fixture methods
   // Note: The setupSpec() and cleanupSpec() methods may not reference instance fields.
@@ -51,7 +51,6 @@ Whereas the first and last phases are optional, the stimulus and response phases
   // First Test
   def "Setup JFileChooser to save a file"() { 
     setup: 
-	    @Shared
   		Chooser ch= new Chooser();
     when:
 		ch.setOpenOrSave(false);
