@@ -51,7 +51,8 @@ Whereas the first and last phases are optional, the stimulus and response phases
   // First Test
   def "Setup JFileChooser to save a file"() { 
     setup: 
-		ch = new Chooser();
+	    @Shared
+  		Chooser ch= new Chooser();
     when:
 		ch.setOpenOrSave(false);
  
