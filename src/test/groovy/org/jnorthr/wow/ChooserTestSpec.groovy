@@ -67,7 +67,7 @@ Whereas the first and last phases are optional, the stimulus and response phases
   // 2nd Test
   def "Set JFileChooser initial folder to known value"() {
     when:
-		ch = new Chooser();
+  		Chooser ch= new Chooser();
 		ch.setPath("/Fred");
  
     then:
@@ -83,7 +83,7 @@ Whereas the first and last phases are optional, the stimulus and response phases
   // 3rd Test
   def "Ask JFileChooser to allow both files and folder selection by user"() {
     when:
-		ch = new Chooser();
+  		Chooser ch= new Chooser();
 		ch.selectBoth();
  
     then:
