@@ -23,7 +23,7 @@ class ChooserTestSpec extends Specification
   // Note: The setupSpec() and cleanupSpec() methods may not reference instance fields.
   def setup() 
   {
-      ch = new Chooser();  
+      //ch = new Chooser();  
   } // run before every feature method
   
   def cleanup() {}        // run after every feature method
@@ -49,7 +49,9 @@ Whereas the first and last phases are optional, the stimulus and response phases
 
 */
   // First Test
-  def "Setup JFileChooser to save a file"() {  
+  def "Setup JFileChooser to save a file"() { 
+    setup: 
+		ch = new Chooser();
     when:
 		ch.setOpenOrSave(false);
  
