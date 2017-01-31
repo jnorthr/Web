@@ -22,7 +22,7 @@ class ChooserTestSpec extends Specification
   // Note: The setupSpec() and cleanupSpec() methods may not reference instance fields.
   def setup() 
   {
-      ch = new Chooser();  
+      Chooser ch = new Chooser();  
   } // run before every feature method
   
   def cleanup() {}        // run after every feature method
