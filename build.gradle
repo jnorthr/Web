@@ -10,7 +10,6 @@
 // Apply the java plugin to add support for Groovy
 apply plugin: 'groovy'
 apply plugin: 'application'
-apply plugin: 'war'
 apply plugin: "de.qaware.seu.as.code.git"
 
 buildscript {
@@ -24,12 +23,6 @@ buildscript {
     classpath "org.slf4j:slf4j-log4j12:1.7.21"
   }
 }
-
-/*
-plugins {
-  id "de.qaware.seu.as.code.git" version "2.3.0.RC2"
-}
-*/
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -70,16 +63,15 @@ dependencies {
     testRuntime "org.objenesis:objenesis:2.1"
 }
 
-mainClassName = "org.jnorthr.wow.WOW"
-webAppDirName = file('war')
-war.duplicatesStrategy = "EXCLUDE"
+mainClassName = "io.jnorthr.toolkit.Chooser"
+
 task say << {
 	println "$projectDir=["+projectDir+"]"
 }
 
 // runs the Chooser main() method; args are ignored but maybe later ?
 task(runChooser, dependsOn: 'classes', type: JavaExec) {
-	main = 'org.jnorthr.wow.Chooser'
+	main = 'io.jnorthr.toolkit.Chooser'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'jimbo', 'hi kids'
 	systemProperty 'simple.message', 'Hi kids '
@@ -87,7 +79,7 @@ task(runChooser, dependsOn: 'classes', type: JavaExec) {
 
 // runs the Picker main() method; args are ignored but maybe later ?
 task(runPicker, dependsOn: 'classes', type: JavaExec) {
-	main = 'org.jnorthr.wow.Picker'
+	main = 'io.jnorthr.toolkit.Picker'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'jimbo', 'hi kids'
 	systemProperty 'simple.message', 'Hi kids '
@@ -95,7 +87,7 @@ task(runPicker, dependsOn: 'classes', type: JavaExec) {
 
 // runs the Saverer main() method; args are ignored but maybe later ?
 task(runSaver, dependsOn: 'classes', type: JavaExec) {
-	main = 'org.jnorthr.wow.Saver'
+	main = 'io.jnorthr.toolkit.Saver'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'jimbo', 'hi kids'
 	systemProperty 'simple.message', 'Hi kids '
@@ -103,7 +95,7 @@ task(runSaver, dependsOn: 'classes', type: JavaExec) {
 
 // runs the main() method; args are ignored but maybe later ?
 task(runResponse, dependsOn: 'classes', type: JavaExec) {
-	main = 'org.jnorthr.wow.Response'
+	main = 'io.jnorthr.toolkit.Response'
 	classpath = sourceSets.main.runtimeClasspath
 	args 'jimbo', 'hi kids'
 	systemProperty 'simple.message', 'Hi kids '
@@ -139,5 +131,5 @@ git {
     }
 }
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.3'
+    gradleVersion = '3.4'
 }
