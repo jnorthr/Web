@@ -1,4 +1,4 @@
-package io.jnorthr.wow;
+package io.jnorthr.toolkit;
 import io.jnorthr.toolkit.Chooser;
 
 /*

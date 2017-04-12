@@ -15,8 +15,8 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.apache.log4j.*
-import groovy.util.logging.*  
+import org.slf4j.*
+import groovy.util.logging.Slf4j
 
 /**
 * The Chooser program implements a support application that
@@ -31,7 +31,7 @@ import groovy.util.logging.*
 * @version 1.0
 * @since   2016-08-01 
 */
-@Log4j
+@Slf4j
 public class Chooser 
 {
     /**

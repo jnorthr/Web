@@ -14,8 +14,12 @@ if(files.length >= 2)
 // **************************************************************
 import java.io.File;
 import java.io.IOException;
-import org.apache.log4j.*
-import groovy.util.logging.*  
+
+import org.slf4j.*
+import groovy.util.logging.Slf4j
+
+//import org.apache.log4j.*
+//import groovy.util.logging.*  
 
 /**
 * The Picker program implements a support application that
@@ -30,7 +34,7 @@ import groovy.util.logging.*
 * @version 1.0
 * @since   2016-08-17
 */
-@Log4j
+@Slf4j
 public class Picker 
 {       
     /**

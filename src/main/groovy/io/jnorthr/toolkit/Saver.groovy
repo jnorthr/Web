@@ -5,9 +5,12 @@ package io.jnorthr.toolkit;
 // **************************************************************
 import java.io.File;
 import java.io.IOException;
-import org.apache.log4j.*
-import groovy.util.logging.*  
+//import org.apache.log4j.*
+//import groovy.util.logging.*  
 import io.jnorthr.toolkit.Response;
+
+import org.slf4j.*
+import groovy.util.logging.Slf4j
 
 /**
 * The Saver program implements a support application that
@@ -19,7 +22,7 @@ import io.jnorthr.toolkit.Response;
 * @version 1.0
 * @since   2016-08-17
 */
-@Log4j
+@Slf4j
 public class Saver 
 {       
     /**

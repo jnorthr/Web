@@ -1,6 +1,10 @@
 package io.jnorthr.toolkit;
-import org.apache.log4j.*
-import groovy.util.logging.*  
+
+import org.slf4j.*
+import groovy.util.logging.Slf4j
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
 * A class that contains results of most recent user dialog
@@ -11,7 +15,9 @@ import groovy.util.logging.*
 * @version 1.0
 * @since   2016-08-27
 */
-@Log4j
+ 
+// Use annotation to inject log field into the class.
+@Slf4j
 public class Response
 {
     /**
@@ -77,7 +83,7 @@ public class Response
       */
     public Response()
     {
-	log.level = Level.INFO
+		//log.level = Level.INFO
     }
 
     /**

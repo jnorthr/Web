@@ -1,6 +1,7 @@
 // groovy sample to choose one file using java's  JFileChooser
 // would only allow choice of a single directory by setting another JFileChooser feature
 // http://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html
+package io.jnorthr.toolkit;
 
 // see more examples in above link to include a file filter
 import java.io.File;
