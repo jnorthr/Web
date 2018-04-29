@@ -287,9 +287,10 @@ public class Chooser
         else
         {
             log.info "... openOrSave="+openOrSave
-            fc = new JFileChooser();
+            //fc = new JFileChooser();
             //fc.setFileSelectionMode(mode);
             JFrame frame = new JFrame("FrameDemo");
+fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             //frame.setPreferredSize(new Dimension(400, 300));
             frame.setVisible(true);
             re.returncode = fc.showOpenDialog(frame);
