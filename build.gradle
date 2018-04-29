@@ -40,8 +40,8 @@ dependencies {
     compile group: 'log4j', name:'log4j', version: '1.2.17'
 	// better put log4j.properties in the src/main/resources folders 
 
-    compile "org.codehaus.groovy:groovy-all:2.4.9"
-    runtime "org.codehaus.groovy:groovy-all:2.4.9"
+    compile "org.codehaus.groovy:groovy-all:2.4.14"
+    runtime "org.codehaus.groovy:groovy-all:2.4.14"
     runtime   "org.slf4j:slf4j-log4j12:1.7.21"
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
@@ -51,7 +51,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     
     // Spock Framework basic dependencies:
-    testCompile "org.codehaus.groovy:groovy-all:2.4.9"
+    testCompile "org.codehaus.groovy:groovy-all:2.4.14"
     // The version have to be compatible with Groovy:
     testCompile "org.spockframework:spock-core:1.0-groovy-2.4"
  
@@ -116,5 +116,5 @@ task(runResponse, dependsOn: 'classes', type: JavaExec) {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.4'
+    gradleVersion = '4.7'
 }

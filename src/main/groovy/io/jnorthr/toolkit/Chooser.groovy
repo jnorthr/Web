@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.*;
+import java.awt.Dimension;
 
 import org.slf4j.*
 import groovy.util.logging.Slf4j
@@ -64,52 +66,52 @@ public class Chooser
      * A path value to influence the JFileChooser as where to allow the user to initially pick a local file artifact.
      * Can be over-written by a value chosen in the previous run of this module. See 'configPath' below
      */
-	def initialFile = "fileToSave.txt";
+	   def initialFile = "fileToSave.txt";
 
 	
     /**
      * Handle to component used by the chooser dialog.
      */
-    JFileChooser fc = null;
+     JFileChooser fc = new JFileChooser();
     
     
     /**
      * Integer value to influence the dialog of what's allowed in the user's inter-action with the chooser. 
      * For example: JFileChooser.FILES_AND_DIRECTORIES, JFileChooser.DIRECTORIES_ONLY, JFileChooser.FILES_ONLY 
      */
-    java.lang.Integer mode = JFileChooser.FILES_AND_DIRECTORIES;
+     java.lang.Integer mode = JFileChooser.FILES_AND_DIRECTORIES;
 
 
     /**
      * Temp work area holding a default file path and file name. This name points to a cache where the selected 
      * path from a prior run is stored.  
      */
-    String configPath = initialPath +".path.txt";
+     String configPath = initialPath +".path.txt";
 
 
     /**
      * Temp work area holding a default file path and file name. This name points to a cache where the selected 
      * full filename from a prior run is stored.  
      */
-    String configFile = initialPath  +".file.txt";
+     String configFile = initialPath  +".file.txt";
 
 
     /**
      * This is the title to appear at the top of user's dialog. It confirms what we expect from the user.  
      */
-    String menuTitle = "Make a Selection";
+     String menuTitle = "Make a Selection";
     
 
     /**
      * This is logic to get the name of the home folder used by this user.  
      */
-    PathFinder pf = new PathFinder();
+     PathFinder pf = new PathFinder();
     
     
     /**
      * This is logic to only permit certain files with specific suffixes.  
      */
-	FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG, JPG, SVG & GIF Images", "png", "jpg", "gif", "svg");
+	   FileNameExtensionFilter filter = new FileNameExtensionFilter("PNG, JPG, SVG & GIF Images", "png", "jpg", "gif", "svg");
 
    // =========================================================================
    /** 
@@ -119,11 +121,11 @@ public class Chooser
     public Chooser()
     {
     	log.info("this is an .info msg from the Chooser default constructor");
-        initialPath = pf.getHomePath();
-		re = new Response();
+      initialPath = pf.getHomePath();
+		  re = new Response();
     	re.fullname = initialPath;
     	re.path = initialPath;
-        setup();
+      setup();
     } // endof constructor
     
 
@@ -142,7 +144,7 @@ public class Chooser
     */
     public void setOpenOrSave(boolean oos)
     {
-    	log.info("setOpenOrSave(String ${oos})");
+        log.info("setOpenOrSave(String ${oos})");
         openOrSave = oos;
     } // end of method
     
@@ -227,7 +229,7 @@ public class Chooser
 
         File workingDirectory = new File(initialPath); 
         fc.setCurrentDirectory(workingDirectory);
-    	log.info("setup changed fc.setCurrentDirectory to ${initialPath}");
+        log.info("setup changed fc.setCurrentDirectory to ${initialPath}");
     } // endof setup
 
 
@@ -273,9 +275,31 @@ public class Chooser
      */
     public Response getChoice()
     {
-        if (!openOrSave) { fc.setSelectedFile(new File(initialFile)); }
-        re.returncode = (!openOrSave) ? fc.showSaveDialog(null) : fc.showOpenDialog(null) ;
+        log.info "... getChoice where openOrSave="+openOrSave;
+
+        if (!openOrSave) 
+        { 
+            log.info "... setSelectedFile="+initialFile;
+            fc.setFileSelectionMode(mode);
+            fc.setSelectedFile(new File(initialFile)); 
+            re.returncode = fc.showSaveDialog(null)
+        }
+        else
+        {
+            log.info "... openOrSave="+openOrSave
+            fc = new JFileChooser();
+            //fc.setFileSelectionMode(mode);
+            JFrame frame = new JFrame("FrameDemo");
+            //frame.setPreferredSize(new Dimension(400, 300));
+            frame.setVisible(true);
+            re.returncode = fc.showOpenDialog(frame);
+            //frame.setVisible(false);
+            //frame.dispose();
+        }
+
+        //re.returncode = (!openOrSave) ? fc.showSaveDialog(null) : fc.showOpenDialog(frame) ;
         re.chosen = false;
+        log.info "... re.returncode="+re.returncode
         
         switch ( re.returncode )
         {
