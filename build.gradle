@@ -115,6 +115,23 @@ task(runResponse, dependsOn: 'classes', type: JavaExec) {
 	systemProperty 'simple.message', 'Hi kids '
 }
 
+
+// runs the main() method; args are ignored but maybe later ?
+task(runFinder, dependsOn: 'classes', type: JavaExec) {
+	main = 'io.jnorthr.toolkit.PathFinder'
+	classpath = sourceSets.main.runtimeClasspath
+	args 'jimbo', 'hi kids'
+	systemProperty 'simple.message', 'Hi kids '
+}
+
+// runs the main() method; args are ignored but maybe later ?
+task(runFile, dependsOn: 'classes', type: JavaExec) {
+	main = 'io.jnorthr.toolkit.FileChooser'
+	classpath = sourceSets.main.runtimeClasspath
+	args 'jimbo', 'hi kids'
+	systemProperty 'simple.message', 'Hi kids '
+}
+
 task wrapper(type: Wrapper) {
     gradleVersion = '4.7'
 }

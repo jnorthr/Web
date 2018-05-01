@@ -259,7 +259,7 @@ public class Chooser
     */
     public allowImagesOnly()
     {
-		fc.setFileFilter(filter);
+  	     fc.setFileFilter(filter);
     } // endof setPath
 
 
