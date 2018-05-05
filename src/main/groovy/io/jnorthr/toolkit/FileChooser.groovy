@@ -12,6 +12,8 @@ import javax.swing.*;
 import org.slf4j.*
 import groovy.util.logging.Slf4j
 
+import io.jnorthr.toolkit.PathFinder;
+
 /**
 * The Chooser program implements a support application that
 * allows user to pick a single file or single folder directory.
@@ -41,6 +43,10 @@ public class FileChooser
     // choose files from this object 
     JFileChooser fc = null;
 
+    /**
+     * A class to gain system values about the local file structure paths.
+     */
+    PathFinder pf = new PathFinder();
 
    // =========================================================================
    /** 
@@ -50,28 +56,13 @@ public class FileChooser
     */
     public FileChooser()
     {
-        homePath = homePath.collectReplacements(replacement);
+        homePath = pf.getHomePath();
+        initialPath = pf.getPWD();
+
         fc = new JFileChooser(homePath);
         fc.setDialogTitle("Pick One Folder or One File");
         fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
     } // endof constructor
-
-
-    // replace windows \ values in homePath with /
-    def replacement = 
-    {
-  	    // Change \\ to /
-        if (it == '\\') 
-        {
-            '/'
-        }
-        // Do not transform
-        else 
-        {
-          null
-      }
-    } // end of replacement
-
 
   // =============================================================================
   /**

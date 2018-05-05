@@ -36,10 +36,11 @@ public class Response
      * Temp work area holding the absolute path to the user's artifact selected with the chooser. 
      * For example: fc.getCurrentDirectory().getAbsolutePath() 
 	 *
-	 * example choosing a file artifact:
+	 * example results after choosing a file artifact:
+     *
 	 * APPROVE path=/Users/jimnorthrop/Dropbox/Projects/Web/config artifact=logback.xml 
 	 * fullname=/Users/jimnorthrop/Dropbox/Projects/Web/config/logback.xml 
-	 * rememberpath=/Users/jimnorthrop/.path.txt 
+	 * path=/Users/jimnorthrop/.path.txt 
 	 * isDir=false
      */
     def path = null;
@@ -47,8 +48,7 @@ public class Response
 
     /**
      * Temp work area holding only the name of the file the user's artifact selected with the chooser, 
-     * but not it's path. Holds a value when Directory_Only choice is in effect of lowest level folder name
-     * and parent path is in 'path' variable above.
+     * but not it's path. Holds a value when choice is a file and parent path is in 'path' variable above.
      */
     def artifact = null;
     
@@ -86,6 +86,50 @@ public class Response
 		//log.level = Level.INFO
     }
 
+    /** 
+     * to get user selection of path of a known local folder minus trailing artifact.
+     */
+    public String getPath()
+    {
+        return path;
+    } // end of getPath
+
+
+    /** 
+     * To get user selection of  full name of a known local folder.
+     */
+    public String getName()
+    {
+        return fullname;
+    } // end of getName
+
+
+    /** 
+     * To get user selection of file name in a known local folder when/if a file was chosen to be saved.
+     */
+    public String getArtifact()
+    {
+        return artifact
+    } // end of getArtifact
+
+
+    /** 
+     * To get user selection: true if user APPROVE or CHOOSE.
+     */
+    public boolean getChosen()
+    {
+        return chosen;
+    } // end of getChosen
+
+    /** 
+     * To see if user selection is a known local folder.
+     */
+    public getDir()
+    {   
+        return isDir;
+    } // end of getDir
+
+
     /**
       * class method to pump out log entries as 'info'
       */
@@ -122,6 +166,13 @@ cancelled=${abort}""".toString()
     {
         def obj = new Response();
         println "Response object="+obj.toString();
+        
+        println "... getDir()="+obj.getDir();
+        println "... getChosen()="+obj.getChosen()
+        println "... getArtifact()="+obj.getArtifact();
+        println "... getPath()="+obj.getPath()
+        println "... getName()="+obj.getName()
+
         println "--- Response end ---\n";
 	} // end of main
 	

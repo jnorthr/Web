@@ -68,12 +68,10 @@ public class Chooser
      */
 	   def initialFile = "fileToSave.txt";
 
-	
     /**
      * Handle to component used by the chooser dialog.
      */
      JFileChooser fc = new JFileChooser();
-    
     
     /**
      * Integer value to influence the dialog of what's allowed in the user's inter-action with the chooser. 
@@ -81,13 +79,11 @@ public class Chooser
      */
      java.lang.Integer mode = JFileChooser.FILES_AND_DIRECTORIES;
 
-
     /**
      * Temp work area holding a default file path and file name. This name points to a cache where the selected 
      * path from a prior run is stored.  
      */
      String configPath = initialPath +".path.txt";
-
 
     /**
      * Temp work area holding a default file path and file name. This name points to a cache where the selected 
@@ -95,19 +91,16 @@ public class Chooser
      */
      String configFile = initialPath  +".file.txt";
 
-
     /**
      * This is the title to appear at the top of user's dialog. It confirms what we expect from the user.  
      */
      String menuTitle = "Make a Selection";
     
-
     /**
      * This is logic to get the name of the home folder used by this user.  
      */
      PathFinder pf = new PathFinder();
-    
-    
+        
     /**
      * This is logic to only permit certain files with specific suffixes.  
      */
@@ -120,11 +113,15 @@ public class Chooser
     */
     public Chooser()
     {
-    	log.info("this is an .info msg from the Chooser default constructor");
+    	log.info("Chooser() - this is an .info msg from the Chooser default constructor");
       initialPath = pf.getHomePath();
 		  re = new Response();
+
+      log.info "re.fullname set to "+initialPath;
     	re.fullname = initialPath;
     	re.path = initialPath;
+      log.info "re.path set to "+initialPath;
+      selectBoth();
       setup();
     } // endof constructor
     
@@ -134,10 +131,11 @@ public class Chooser
     */
     public void setTitle(String newTitle)
     {
-    	log.info("setTitle(String ${newTitle})");
-        menuTitle = newTitle;
-        fc.setDialogTitle(menuTitle);
+      log.info("setTitle(String ${newTitle})");
+      menuTitle = newTitle;
+      fc.setDialogTitle(menuTitle);
     } // end of method
+
 
    /** 
     * Influences JFileChooser to use either the 'Open' dialog if true or the 'Save' dialog if false.
@@ -147,6 +145,7 @@ public class Chooser
         log.info("setOpenOrSave(String ${oos})");
         openOrSave = oos;
     } // end of method
+
     
    /** 
     * Ask JFileChooser to only allow user to pick a local file but not folder.
@@ -179,58 +178,81 @@ public class Chooser
         fileSelect = true;
         pathSelect = true;
     } // endof method
-    
-    
+        
    /**
     * Method to prepare class variables by reading a possibly non-existent cache file written in prior run.
     */
     public void setup()
     {
+        // look for .path.txt
         boolean present = new File(configPath).exists()
         if (present) 
         { 
         	initialPath = new File(configPath).getText(); 
+          log.info "re.path set to "+initialPath;
         	re.path = initialPath; 
         	re.fullname = re.path;
         } // end of if
         
+        // look for .file.txt
         present = new File(configFile).exists()
         if (present) 
         { 
         	initialFile = new File(configFile).getText(); 
         	re.artifact = initialFile; 
+          log.info "re.artifact set to "+initialFile;
+
         	if (initialFile.size() > 0)
         	{
 	        	re.fullname = re.path+File.separator+initialFile;
+            log.info "re.fullname set to "+re.fullname;
 	        } // end of if
         } // end of if 
 
         fc = new JFileChooser();
-        mode = JFileChooser.DIRECTORIES_ONLY;
+        //fc.addChoosableFileFilter(filter);
+
+        mode = JFileChooser.FILES_AND_DIRECTORIES;
+        fileSelect = true;
+        pathSelect = true;
+
+        log.info "mode set to FILES_AND_DIRECTORIES";
 
         if (pathSelect)
         {
             if (fileSelect)
             {
                 mode = JFileChooser.FILES_AND_DIRECTORIES;
+                log.info "mode set to FILES_AND_DIRECTORIES";
+                fileSelect = true;
+                pathSelect = true;
             }
             else
             {
                 mode = JFileChooser.DIRECTORIES_ONLY;
+                log.info "mode set to DIRECTORIES_ONLY";
+                fileSelect = false;
+                pathSelect = true;
             }
         }
         else
         {
-            mode = JFileChooser.FILES_ONLY;
+            if (fileSelect) 
+            { 
+                mode = JFileChooser.FILES_ONLY; 
+                log.info "mode set to FILES_ONLY";
+                fileSelect = true;
+                pathSelect = false;
+            }
         }       
 
         fc.setFileSelectionMode(this.mode);
         fc.setDialogTitle(menuTitle);
 
-        File workingDirectory = new File(initialPath); 
+        File workingDirectory = new File(pf.getPWD()); 
         fc.setCurrentDirectory(workingDirectory);
         log.info("setup changed fc.setCurrentDirectory to ${initialPath}");
-    } // endof setup
+    } // end of setup
 
 
    /** 
@@ -239,8 +261,12 @@ public class Chooser
     public void setPath(String newPath)
     {
         initialPath = newPath;
-        File workingDirectory = new File(initialPath);
+        log.info "setPath to "+newPath;
+
+        File workingDirectory = new File(newPath);
         if ( !workingDirectory.exists() ) { throw new RuntimeException("Cannot setPath to non-existence path:"+newPath)} 
+        log.info "setPath sets workingDirectory to "+workingDirectory.toString();
+
         fc.setCurrentDirectory(workingDirectory);
     } // endof setPath
 
@@ -250,6 +276,7 @@ public class Chooser
     */
     public saveAs(String filename)
     {
+        log.info "saveAs initialFile set to "+filename;
         initialFile = filename;
     } // endof setPath
 
@@ -259,11 +286,12 @@ public class Chooser
     */
     public allowImagesOnly()
     {
-  	     fc.setFileFilter(filter);
+        log.info "allowImagesOnly()"
+  	    fc.setFileFilter(filter);
     } // endof setPath
 
 
-	// =============================================================================
+	  // =============================================================================
     /**
      * Returns a Response object to indicate what the user did in the JFileChooser dialog. 
      * 
@@ -282,7 +310,8 @@ public class Chooser
             log.info "... setSelectedFile="+initialFile;
             fc.setFileSelectionMode(mode);
             fc.setSelectedFile(new File(initialFile)); 
-            re.returncode = fc.showSaveDialog(null)
+            re.returncode = fc.showSaveDialog(null);
+            log.info "... getChoice re.returncode is "+re.returncode;
         }
         else
         {
@@ -290,10 +319,11 @@ public class Chooser
             //fc = new JFileChooser();
             //fc.setFileSelectionMode(mode);
             JFrame frame = new JFrame("FrameDemo");
-fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             //frame.setPreferredSize(new Dimension(400, 300));
             frame.setVisible(true);
             re.returncode = fc.showOpenDialog(frame);
+            log.info "... getChoice re.returncode is "+re.returncode;
             //frame.setVisible(false);
             //frame.dispose();
         }
@@ -306,10 +336,10 @@ fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         {
             case JFileChooser.APPROVE_OPTION:
                   File file = fc.getSelectedFile();
-				  re.returncode = JFileChooser.APPROVE_OPTION;
-				  re.found = file.exists();
-				  println "JFileChooser.APPROVE_OPTION chose dir:"+fc.getCurrentDirectory().getAbsolutePath();
-				  // was this a directory folder ?
+				          re.returncode = JFileChooser.APPROVE_OPTION;
+				          re.found = file.exists();
+				          log.info "JFileChooser.APPROVE_OPTION chose dir:"+fc.getCurrentDirectory().getAbsolutePath();
+				          // was this a directory folder ?
                   re.isDir = new File(file.toString()).isDirectory();
 
                   re.fullname = file.toString();
@@ -321,14 +351,14 @@ fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                   // keep path and filename for next time in our external ~/.path.txt file
                   def fo = new File(configPath)
                   fo.text = (re.isDir) ? re.fullname : re.path;
-				  fo = new File(configFile)
+				          fo = new File(configFile)
                   fo.text = (re.isDir) ? "" : re.artifact;
                    
                   re.chosen = true;
                   break;
 
             case JFileChooser.CANCEL_OPTION:
-				  re.returncode = JFileChooser.CANCEL_OPTION;
+				          re.returncode = JFileChooser.CANCEL_OPTION;
                   re.chosen = false;
                   re.found = false;
                   re.abort = true;
@@ -336,7 +366,7 @@ fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                   break;
 
             case JFileChooser.ERROR_OPTION:
-				  re.returncode = JFileChooser.ERROR_OPTION;
+				          re.returncode = JFileChooser.ERROR_OPTION;
                   re.found = false;
                   re.chosen = false;
                   log.info "user action caused error";
@@ -346,33 +376,6 @@ fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         println "Chooser getChoice Response=\n"+re.toString();
         return re;
     } // end of pick
-
-
-    /** 
-     * to get user selection of path of a known local folder.
-     */
-    public String getPath()
-    {
-    	return re.path;
-    } // end of getPath
-
-
-    /** 
-     * To get user selection of file but not path of a known local folder.
-     */
-    public String getFile()
-    {
-    	return re.artifact;
-    } // end of getFile
-
-
-    /** 
-     * To get user selection of  full name of a known local folder.
-     */
-    public String getFullName()
-    {
-    	return re.fullname;
-    } // end of getFullName
 
 
    /** 
@@ -395,132 +398,131 @@ fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     public static void main(String[] args)
     {
 
-		// ---------------------------------------------------------------------
-		/*
-		 * need to test the feature to allow user to choose a filename to saveAs
-		 */    
-		Response re;  
+		  // ---------------------------------------------------------------------
+		  /*
+		   * need to test the feature to allow user to choose a filename to saveAs
+	     */    
+		    Response re;  
         def ch = new Chooser();
 
-		ch.say "------------------------"
-        ch.say "Try a SAVE feature"
+
+      	ch.say "------------------------"
+        ch.say "... Try a SAVE feature"
         ch.saveAs("save.me");
         ch.setOpenOrSave(false);
-        ch.setTitle("Pick a Folder and Filename to save");
+        ch.setTitle("Pick output Folder then enter Save As Filename");
+
         re = ch.getChoice(); 
-    	if (re.abort)
-    	{
-    		println "user clicked 'cancel' button"
-    	} // end of if
+        if (re.abort)
+        {
+    		    println "user clicked 'cancel' button"
+        } // end of if
     	
-		println re;
+    		println re;
 
         if (re.chosen && !re.abort)
         {
-        	ch.say "path="+re.path+"\nartifact name="+re.artifact;    
-            ch.say "the full name of the output file is "+re.fullname;
-            ch.say "isDir ? = "+re.isDir;    
+            ch.say "... path="+re.path+"\nartifact name="+re.artifact;    
+            ch.say "... the full name of the output file is "+re.fullname;
+            ch.say "... isDir ? = "+re.isDir;    
         }
         else
         {
-            ch.say "no choice was made so output path is "+re.path+" and name="+re.fullname;
-		}
-
-
+            ch.say "... no choice was made so output path is "+re.path+" and name="+re.fullname;
+        }
 
 		// ---------------------------------------------------------------------
 		/*
 		 * need to test the default to allow user to choose a folder OR a file
 		 */
+		    println "\n------------------------\n"
+        def ch2 = new Chooser();
+        ch2.say "... Try the default feature"
+        re = ch2.getChoice(); 
+        println re;
 
-		println "\n------------------------\n"
-        ch = new Chooser();
-        ch.say "Try the default feature"
-        re = ch.getChoice(); 
         if (re.abort)
-    	{
-    		println "user clicked 'cancel' button"
-    	} // end of if
+        {
+    	     println "... user clicked 'cancel' button"
+    	  } // end of if
     	
-		println re;
-
-        if (re.chosen && !re.abort)
-        {
-        	ch.say "path="+re.path+"\nartifact name="+re.artifact;    
-            ch.say "the full name of the selected artifact is "+re.fullname;
-            ch.say "isDir ? = "+re.isDir;    
-        }
-        else
-        {
-            ch.say "no choice was made so output path is "+re.path+" and name="+re.fullname;
-		}
-		ch.say "------------------------\n"
-
+      if (re.chosen && !re.abort)
+      {
+        	ch2.say "... re.path="+re.path+"\n... re.artifact name="+re.artifact;    
+          ch2.say "... the full name of the selected choice is "+re.fullname;
+          ch2.say "... isDir ? = "+re.isDir;    
+      }
+      else
+      {
+            ch2.say "... no choice was made so output re.path is "+re.path+" and re.fullname="+re.fullname;
+		  }
+		
+      ch2.say "------------------------\n"
+      //System.exit(0);
 
 		// ---------------------------------------------------------------------
 		/*
 		 * need to test selecting folders only
 		 */
-		ch.say "\n------------------------\n"
-        ch = new Chooser();
-        ch.say "Pick a folder-only test"
-        ch.setTitle("Pick input Folder");
-        ch.selectFolderOnly();
+		  ch.say "\n------------------------\n"
+      ch = new Chooser();
+      ch.say "Pick a folder-only test"
+      ch.setTitle("Pick input Folder");
+      ch.selectFolderOnly();
     	re = ch.getChoice(); 
     	if (re.abort)
     	{
     		println "user clicked 'cancel' button"
     	} // end of if
     	
-		println re;
+		  println re;
 
-        if (re.chosen && !re.abort)
-        {
+      if (re.chosen && !re.abort)
+      {
             ch.say "path="+re.path+"\nfile name="+re.artifact;    
             ch.say "the full name of the selected folder is "+re.fullname;    
             ch.say "isDir ? = "+re.isDir;    
-        }
-        else
-        {
+      }
+      else
+      {
             ch.say "no choice was made so folder will be "+re.path+" and name="+re.fullname;
-		}
-		ch.say "------------------------\n"
+		  }
+		  ch.say "------------------------\n"
 
 
 		// ---------------------------------------------------------------------
 		/*
 		 * need to test get image only files like .jpg using Filter class
 		 */
-		ch.say "\n------------------------\n"
-        ch = new Chooser();
-        ch.say "trying to pick a file-only image as png, jpg, gif"
-        ch.setTitle("Pick input image");
-        ch.selectFileOnly();
-        ch.allowImagesOnly();
+		  ch.say "\n------------------------\n"
+      ch = new Chooser();
+      ch.say "trying to pick a file-only image as png, jpg, gif"
+      ch.setTitle("Pick input image");
+      ch.selectFileOnly();
+      ch.allowImagesOnly();
     	re = ch.getChoice();
     	
-		println re;
+		  println re;
 
     	if (re.abort)
     	{
-    		println "user clicked 'cancel' button"
+    	     println "user clicked 'cancel' button"
     	} // end of if
     	         
-        if (re.chosen && !re.abort)
-        {
+      if (re.chosen && !re.abort)
+      {
             ch.say "path="+re.path+"\nfile name="+re.artifact;    
             ch.say "the full name of the selected image is "+re.fullname;    
             ch.say "isDir ? = "+re.isDir;   
-        }
-        else
-        {
+      }
+      else
+      {
             ch.say "no choice was made so image file is "+re.path+" and name="+re.fullname;
-		}
-		ch.say "------------------------\n"
+		  }
 
-       System.exit(0);
+		  ch.say "------------------------\n"
+
+      System.exit(0);
     } // end of main
 
-    
-    
 } // end of class

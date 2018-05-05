@@ -32,7 +32,7 @@ import groovy.util.logging.Slf4j
 *
 * @author  jnorthr
 * @version 1.0
-* @since   2016-08-17
+* @since   2018-03-17
 */
 @Slf4j
 public class Picker 
@@ -47,14 +47,6 @@ public class Picker
      */
     Chooser ch = null;
     
-    // ==============================================
-    // Following values set after user choice is made
-    
-    /**
-     * t/f indicator of the user's inter-action with the Picker. True when JFileChooser.APPROVE_OPTION
-     */
-    boolean result = false;
-
 
    // =========================================================================
    /** 
@@ -70,16 +62,25 @@ public class Picker
     
     
    /**
-    * Method to prepare class variables by reading a possibly non-existent cache file written in prior run.
+    * Method to fill class variables by using the Chooser object
     */
     public void setup()
     {
         ch = new Chooser();
-        ch.allowImagesOnly();
         ch.selectFileOnly();
+        ch.setTitle("Pick a Folder");
+    	log.info("setup changed currentDirectory to ${ch.initialPath}");
+    } // end of setup
+
+
+   /**
+    * Method to prepare choose to only allow images to be selected.
+    */
+    public void setImage()
+    {
+        ch.allowImagesOnly();
         ch.setTitle("Pick an image");
-    	log.info("setup changed ch.setCurrentDirectory to ${ch.initialPath}");
-    } // endof setup
+    } // end of setup
 
 
     // =============================================================================
@@ -89,54 +90,13 @@ public class Picker
      * This method always returns true if user clicked the APPROVE button indicating 
      * an actual choice was made else returns false if user aborted and failed to make a choice.
      *
-     * @param  menuname the title of the dialog shown to the user
-     * @return boolean true if user clicked the APPROVE button
-     *                false if user did not make a choice
+     * @return response object with values from user choice
      */
     public Response getChoice()
     {
 		re = ch.getChoice();
-		def x = re.artifact.trim().size();
-		if (x < 1) { re.chosen = false; }
-		if (getDir()) { re.chosen = false; }
 		return re;
     } // end of getChoice
-
-
-    /** 
-     * to get user selection of path of a known local folder.
-     */
-    public String getPath()
-    {
-    	return re.path;
-    } // end of getPath
-
-
-    /** 
-     * To get user selection of file but not path of a known local folder.
-     */
-    public String getArtifact()
-    {
-    	return re.artifact;
-    } // end of getFile
-
-
-    /** 
-     * To get user selection of  full name of a known local folder.
-     */
-    public String getName()
-    {
-    	return re.fullname;
-    } // end of getName
-
-
-    /** 
-     * To see if user selection is a known local folder.
-     */
-    public getDir()
-    {	
-    	return re.isDir;
-    } // end of getDir
 
 
    /** 
@@ -161,22 +121,30 @@ public class Picker
 	/*
 	 * need to test get image only files like .jpg using Filter class
 	 */
+        println "--- Starting Picker.groovy ---"
         def ch = new Picker();
-        ch.say "trying to pick a file-only image as png, jpg, gif, .svg";
+        ch.say "... trying to find a folder";
         Response re = ch.getChoice();
+
         if (re.chosen)
         {
-            ch.say "path="+re.path;
-            ch.say "file name="+re.artifact;    
-            ch.say "the full name of the selected file is "+re.fullname;    
+            ch.say "... path="+re.path;
+            ch.say "... file name="+re.artifact;    
+            ch.say "... the full name of the selected folder is "+re.fullname;    
         }
         else
         {
-            ch.say "no choice was made so output filename is "+re.fullname+" and path="+re.path;
-            ch.say "artifact name="+re.artifact;    
+            ch.say "... no choice was made so output folder is "+re.fullname+" and path="+re.path;
+            ch.say "... artifact name="+re.artifact;    
         }
         
-		ch.say "------------------------\n"
+		ch.say "------------------------"
+
+        //ch.say "... try to pick a file-only image as png, jpg, gif, .svg";
+
+
+
+        println "--- Ending Picker.groovy ---"
 
        System.exit(0);
     } // end of main    

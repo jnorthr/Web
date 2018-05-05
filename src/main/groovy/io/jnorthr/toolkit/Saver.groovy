@@ -68,14 +68,13 @@ public class Saver
 
 	// =============================================================================
     /**
-     * Returns a boolean to indicate what the user did in the Chooser dialog. 
+     * Returns a Respoonse object to indicate what the user did in the Chooser dialog. 
      * 
-     * This method always returns true if user clicked the APPROVE button indicating 
-     * an actual choice was made else returns false if user aborted and failed to make a choice.
+     * This method always returns Response.abort of false if user clicked the APPROVE button indicating 
+     * an actual choice was not made else returns true if user makes a choice and it's values.
      *
-     * @param  menuname the title of the dialog shown to the user
-     * @return boolean true if user clicked the APPROVE button
-     *                false if user did not make a choice
+     * @return Response false if user clicked the CANCEL button was not used
+     *                true if user made a choice
      */
     public Response getChoice()
     {
@@ -85,43 +84,6 @@ public class Saver
 		return re;
 	} // end of getChoice
 
-
-    /** 
-     * to get user selection of path of a known local folder minus trailing artifact.
-     */
-    public String getPath()
-    {
-    	return re.path;
-    } // end of getPath
-
-
-    /** 
-     * To get user selection of  full name of a known local folder.
-     */
-    public String getName()
-    {
-    	return re.fullname;
-    } // end of getName
-
-
-    /** 
-     * To get user selection of file name in a known local folder.
-     */
-    public String getArtifact()
-    {
-    	return re.artifact
-    } // end of getArtifact
-
-
-    /** 
-     * To get user selection: true if user APPROVE.
-     */
-    public boolean getChosen()
-    {
-    	return re.chosen;
-    } // end of getChosen
-
-
    /** 
     * Produce log messages using .info method
     */
@@ -129,7 +91,6 @@ public class Saver
     {
     	log.info msg;
     } // end of say
-    
     
     
 	// =============================================================================    

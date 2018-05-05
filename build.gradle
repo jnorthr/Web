@@ -21,7 +21,7 @@ buildscript {
     classpath "org.slf4j:slf4j-log4j12:1.7.21"
   }
 }
-defaultTasks 'clean','getJars', 'build', 'test', 'groovydoc', 'run'
+defaultTasks 'clean','getJars', 'build', 'test', 'groovydoc', 'runFinder', 'runChooser', 'runPicker', 'runSaver', 'runResponse', 'runFile'
 
 // In this section you declare where to find the dependencies of your project
 repositories {

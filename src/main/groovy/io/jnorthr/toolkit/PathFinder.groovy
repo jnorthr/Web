@@ -24,12 +24,10 @@ public class PathFinder
      */
     String homePath  = System.getProperty("user.home") + File.separator;
 
-
     /**
      * This name points to current platform-independent folder path location the user is now working in.  
      */
     String currentWorkingDirectory  = System.getProperty("user.dir") + File.separator;
-
     
    // =========================================================================
    /** 
@@ -88,6 +86,7 @@ public class PathFinder
      */
     public static void main(String[] args)
     {
+        println "\n---------------\n--- PathFinder starting ---"
         PathFinder pf;
         
         pf = new PathFinder();
@@ -95,7 +94,7 @@ public class PathFinder
         println "user.home (homePath) ="+pf.getHomePath();
         println "user.dir (pwd)="+pf.getPWD();
          
-        println "\n---------------\n--- the end ---"
+        println "---------------\n--- the end ---"
         //System.exit(0);
     } // end of main    
     
