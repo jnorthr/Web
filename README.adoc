@@ -1,0 +1,18 @@
+= Samples of Stuff To Use on Websites
+:imagesdir: ./images
+
+== Website Samples
+
+This sub-project was needed to make a home for some code that might become the foundation
+of a Photo Slider utility or web page.
+
+image:DropCapS.jpg[] ample of image drop capital.
+
+xxx
+
+image::divider23.png[align="center",scaledwidth=33%]
+
+image::divider3.png[align="center"]
+
+image::divider5.jpg[float="right"]
+

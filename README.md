@@ -1,4 +1,4 @@
-# WOW and Groovy JFileChooser Samples
+# WOW Samples
 
-Home Page of WOW Slider Sample and JFileChooser Sample Code
+Home Page of WOW Slider Samples
 =======
